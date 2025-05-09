@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Image Compressor | MB to KB Converter</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+            --gray: #adb5bd;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7ff;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: white;
+            box-shadow: var(--shadow);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        main {
+            padding: 40px 0;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .converter-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .converter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .converter-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .converter-icon {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .converter-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            background: rgba(248, 249, 250, 0.7);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .control-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .control-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .control-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-with-unit {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .input-with-unit input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .input-with-unit input:focus {
+            outline: none;
+        }
+
+        .unit {
+            padding: 0 15px;
+            background: var(--light);
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            background: white;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .results {
+            display: none;
+            margin-top: 30px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .savings-badge {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .image-header {
+            padding: 15px 20px;
+            background: var(--light);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+        }
+
+        .image-container {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
+            background: #f9f9f9;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        .image-info {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .info-label {
+            color: var(--gray);
+        }
+
+        .info-value {
+            font-weight: 500;
+        }
+
+        .download-btn {
+            width: 100%;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            text-align: center;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .download-btn:hover {
+            background: var(--secondary);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(67, 97, 238, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav ul {
+                justify-content: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="/" class="logo">MB to KB Converter</a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/how-to-use">How to Use</a></li>
+                    <li><a href="/privacy">Privacy</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>MB to KB Image Converter</h1>
+            <p class="subtitle">Precisely reduce your image file size from megabytes to kilobytes with manual target size input</p>
+        </section>
+
+        <section class="converter-container">
+            <div class="converter-header">
+                <h2 class="converter-title">
+                    <span class="converter-icon">📏</span>
+                    Precision Converter
+                </h2>
+            </div>
+
+            <div class="converter-controls">
+                <div class="control-group">
+                    <div class="control-header">
+                        <span class="control-icon">📁</span>
+                        <h3 class="control-title">Image Input</h3>
+                    </div>
+                    <div class="input-group">
+                        <label for="file-input">Select Image File</label>
+                        <input type="file" id="file-input" accept="image/*">
+                    </div>
+                    <div class="input-group">
+                        <label>Original Size</label>
+                        <div class="input-with-unit">
+                            <input type="text" id="original-size-display" readonly>
+                            <span class="unit" id="original-unit">KB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-header">
+                        <span class="control-icon">🎯</span>
+                        <h3 class="control-title">Compression Target</h3>
+                    </div>
+                    <div class="input-group">
+                        <label for="target-size">Target File Size</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="target-size" min="10" max="10240" placeholder="500">
+                            <span class="unit">KB</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="output-format">Output Format</label>
+                        <select id="output-format">
+                            <option value="auto">Same as input</option>
+                            <option value="jpeg">JPEG</option>
+                            <option value="png">PNG</option>
+                            <option value="webp">WEBP</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="convert-btn" disabled>
+                    Convert MB to KB
+                </button>
+                <button class="btn btn-outline" id="reset-btn">
+                    Reset
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Optimizing your image...</p>
+            </div>
+
+            <div class="results" id="results">
+                <div class="results-header">
+                    <h3>Conversion Results</h3>
+                    <div class="savings-badge">
+                        <span id="savings-text">Success!</span>
+                    </div>
+                </div>
+
+                <div class="comparison">
+                    <div class="image-card">
+                        <div class="image-header">Original Image</div>
+                        <div class="image-container">
+                            <img id="original-img" src="" alt="Original Image">
+                        </div>
+                        <div class="image-info">
+                            <div class="info-row">
+                                <span class="info-label">File Size:</span>
+                                <span class="info-value" id="original-size-full">0 KB</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Dimensions:</span>
+                                <span class="info-value" id="original-dimensions">0 × 0 px</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="image-card">
+                        <div class="image-header">Compressed Image</div>
+                        <div class="image-container">
+                            <img id="compressed-img" src="" alt="Compressed Image">
+                        </div>
+                        <div class="image-info">
+                            <div class="info-row">
+                                <span class="info-label">File Size:</span>
+                                <span class="info-value" id="compressed-size">0 KB</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Dimensions:</span>
+                                <span class="info-value" id="compressed-dimensions">0 × 0 px</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Target:</span>
+                                <span class="info-value" id="target-reached">0 KB</span>
+                            </div>
+                        </div>
+                        <a href="#" class="download-btn" id="download-btn">
+                            Download Compressed Image
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>MB to KB Converter</h3>
+                    <p>Precision tool for reducing image file sizes with manual target size control.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/how-to-use">How to Use</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:contact@example.com">Email Us</a></li>
+                        <li><a href="/feedback">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; <span id="current-year"></span> MB to KB Converter. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // DOM elements
+            const fileInput = document.getElementById('file-input');
+            const convertBtn = document.getElementById('convert-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const originalImg = document.getElementById('original-img');
+            const compressedImg = document.getElementById('compressed-img');
+            const originalSizeDisplay = document.getElementById('original-size-display');
+            const originalUnit = document.getElementById('original-unit');
+            const originalSizeFull = document.getElementById('original-size-full');
+            const compressedSize = document.getElementById('compressed-size');
+            const originalDimensions = document.getElementById('original-dimensions');
+            const compressedDimensions = document.getElementById('compressed-dimensions');
+            const targetReached = document.getElementById('target-reached');
+            const savingsText = document.getElementById('savings-text');
+            const downloadBtn = document.getElementById('download-btn');
+            const targetSizeInput = document.getElementById('target-size');
+            const outputFormat = document.getElementById('output-format');
+            
+            let originalFile = null;
+            let compressedBlob = null;
+            let originalWidth = 0;
+            let originalHeight = 0;
+
+            // File input handler
+            fileInput.addEventListener('change', function() {
+                if (this.files.length) {
+                    handleFileSelect(this.files[0]);
+                }
+            });
+            
+            // Convert button handler
+            convertBtn.addEventListener('click', function() {
+                if (originalFile && targetSizeInput.value) {
+                    compressToTargetSize();
+                }
+            });
+            
+            // Reset button handler
+            resetBtn.addEventListener('click', function() {
+                resetConverter();
+            });
+            
+            // Download button handler
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (compressedBlob) {
+                    downloadCompressedImage();
+                }
+            });
+            
+            // Main functions
+            function handleFileSelect(file) {
+                // Validate file
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file (JPG, PNG, WEBP)');
+                    return;
+                }
+                
+                originalFile = file;
+                
+                // Display original size
+                const sizeInKB = file.size / 1024;
+                const sizeInMB = file.size / (1024 * 1024);
+                
+                if (sizeInMB >= 1) {
+                    originalSizeDisplay.value = sizeInMB.toFixed(1);
+                    originalUnit.textContent = 'MB';
+                } else {
+                    originalSizeDisplay.value = Math.round(sizeInKB);
+                    originalUnit.textContent = 'KB';
+                }
+                
+                originalSizeFull.textContent = formatFileSize(file.size);
+                
+                // Read and display image
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalImg.src = e.target.result;
+                    
+                    // Get image dimensions
+                    const img = new Image();
+                    img.onload = function() {
+                        originalWidth = this.width;
+                        originalHeight = this.height;
+                        originalDimensions.textContent = `${this.width} × ${this.height} px`;
+                        
+                        // Enable convert button if target size is set
+                        if (targetSizeInput.value) {
+                            convertBtn.disabled = false;
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            function compressToTargetSize() {
+                if (!originalFile || !targetSizeInput.value) return;
+                
+                const targetKB = parseInt(targetSizeInput.value);
+                if (isNaN(targetKB) || targetKB <= 0) {
+                    alert('Please enter a valid target size in KB');
+                    return;
+                }
+                
+                const targetBytes = targetKB * 1024;
+                const maxQuality = 1.0;
+                const minQuality = 0.1;
+                const maxIterations = 10;
+                const tolerance = 0.05; // 5% tolerance
+                
+                loading.style.display = 'block';
+                convertBtn.disabled = true;
+                results.style.display = 'none';
+                
+                // Get output format
+                let format = outputFormat.value;
+                if (format === 'auto') {
+                    format = originalFile.type.split('/')[1] || 'jpeg';
+                }
+                
+                // Binary search for optimal quality
+                let low = minQuality;
+                let high = maxQuality;
+                let currentQuality = high;
+                let bestBlob = null;
+                let iterations = 0;
+                
+                function attemptCompression() {
+                    iterations++;
+                    
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = originalWidth;
+                    canvas.height = originalHeight;
+                    
+                    const img = new Image();
+                    img.onload = function() {
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        canvas.toBlob(function(blob) {
+                            if (!blob) {
+                                finishCompression(null);
+                                return;
+                            }
+                            
+                            const sizeDiff = blob.size - targetBytes;
+                            const sizeRatio = blob.size / targetBytes;
+                            
+                            if (Math.abs(sizeDiff) <= targetBytes * tolerance || iterations >= maxIterations) {
+                                finishCompression(blob);
+                            } else if (blob.size > targetBytes) {
+                                // Need higher compression (lower quality)
+                                high = currentQuality;
+                                currentQuality = (low + high) / 2;
+                                setTimeout(attemptCompression, 0);
+                            } else {
+                                // Can afford better quality
+                                bestBlob = blob;
+                                low = currentQuality;
+                                currentQuality = (low + high) / 2;
+                                setTimeout(attemptCompression, 0);
+                            }
+                        }, `image/${format}`, currentQuality);
+                    };
+                    
+                    img.src = URL.createObjectURL(originalFile);
+                }
+                
+                function finishCompression(blob) {
+                    compressedBlob = blob || bestBlob;
+                    
+                    if (!compressedBlob) {
+                        loading.style.display = 'none';
+                        alert('Failed to compress image to target size. Try a larger target size.');
+                        convertBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // Display compressed image
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        compressedImg.src = e.target.result;
+                        
+                        // Display compressed info
+                        compressedSize.textContent = formatFileSize(compressedBlob.size);
+                        compressedDimensions.textContent = `${originalWidth} × ${originalHeight} px`;
+                        targetReached.textContent = `${targetKB} KB`;
+                        
+                        // Calculate savings
+                        const originalKB = originalFile.size / 1024;
+                        const compressedKB = compressedBlob.size / 1024;
+                        const savings = ((originalKB - compressedKB) / originalKB * 100).toFixed(1);
+                        
+                        if (compressedKB <= targetKB * 1.05) {
+                            savingsText.textContent = `Target achieved! (${savings}% smaller)`;
+                        } else {
+                            savingsText.textContent = `Close to target (${savings}% smaller)`;
+                        }
+                        
+                        // Show results
+                        loading.style.display = 'none';
+                        results.style.display = 'block';
+                        convertBtn.disabled = false;
+                        
+                        // Scroll to results
+                        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    };
+                    reader.readAsDataURL(compressedBlob);
+                }
+                
+                attemptCompression();
+            }
+            
+            function downloadCompressedImage() {
+                if (!compressedBlob) return;
+                
+                const url = URL.createObjectURL(compressedBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                
+                // Get file extension
+                let extension = outputFormat.value;
+                if (extension === 'auto') {
+                    extension = originalFile.name.split('.').pop().toLowerCase();
+                    if (!['jpeg', 'jpg', 'png', 'webp'].includes(extension)) {
+                        extension = 'jpg';
+                    }
+                }
+                
+                // Create download filename
+                const originalName = originalFile.name.split('.').slice(0, -1).join('.');
+                a.download = `${originalName}_${targetSizeInput.value}kb.${extension}`;
+                
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            function resetConverter() {
+                fileInput.value = '';
+                originalFile = null;
+                compressedBlob = null;
+                
+                originalImg.src = '';
+                compressedImg.src = '';
+                originalSizeDisplay.value = '';
+                originalUnit.textContent = 'KB';
+                originalSizeFull.textContent = '0 KB';
+                compressedSize.textContent = '0 KB';
+                originalDimensions.textContent = '0 × 0 px';
+                compressedDimensions.textContent = '0 × 0 px';
+                targetReached.textContent = '0 KB';
+                savingsText.textContent = 'Success!';
+                
+                convertBtn.disabled = true;
+                loading.style.display = 'none';
+                results.style.display = 'none';
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+            
+            // Enable convert button when both file and target size are set
+            targetSizeInput.addEventListener('input', function() {
+                if (originalFile && this.value) {
+                    convertBtn.disabled = false;
+                } else {
+                    convertBtn.disabled = true;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
